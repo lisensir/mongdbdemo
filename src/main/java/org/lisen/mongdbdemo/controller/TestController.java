@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import org.lisen.mongdbdemo.config.HelloSender;
 import org.lisen.mongdbdemo.vo.Runoob;
 import org.mongodb.morphia.Datastore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +60,41 @@ public class TestController {
 
         JSONObject json = new JSONObject();
         json.put("op", "ok");
+        return json;
+    }
+
+    @Autowired
+    private HelloSender sender;
+
+    @GetMapping("/direct")
+    public JSONObject direct(){
+        sender.directSend();
+        JSONObject json = new JSONObject();
+        json.put("op", "ok");
+        return json;
+    }
+
+    @GetMapping("/topicMessage")
+    public JSONObject topicMessage() {
+        sender.topicSendMessage();
+        JSONObject json = new JSONObject();
+        json.put("op", "topic message");
+        return json;
+    }
+
+    @GetMapping("/topicMessages")
+    public JSONObject topicMessages() {
+        sender.topicSendMessages();
+        JSONObject json = new JSONObject();
+        json.put("op", "topic messages");
+        return json;
+    }
+
+    @GetMapping("/fanoutMessage")
+    public JSONObject fanoutSendMessage() {
+        sender.fanoutSendMessage();
+        JSONObject json = new JSONObject();
+        json.put("op", "fanout messages");
         return json;
     }
 
